@@ -1,0 +1,4 @@
+services:
+  plantuml:
+    build: ./plantuml
+    image: ${CONTAINER_REGISTRY}${PLANTUML_IMAGE:-bin/plantuml}:${TAG:-latest}
