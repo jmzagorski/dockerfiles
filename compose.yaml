@@ -2,3 +2,7 @@ services:
   plantuml:
     build: ./plantuml
     image: ${CONTAINER_REGISTRY}${PLANTUML_IMAGE:-bin/plantuml}:${TAG:-latest}
+
+  toilet:
+    build: ./toilet
+    image: ${CONTAINER_REGISTRY}${TOILET_IMAGE:-bin/toilet}:${TAG:-latest}

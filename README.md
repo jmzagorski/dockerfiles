@@ -13,6 +13,7 @@ variables to customize the image.
 Additionally, all images can be pulled from https://ghcr.io/jmzagorski, using the image name
 and optional tag as the last path parameter. See the table below for more details.
 
-| Dockerfile | Service | Summary | Pull | Running |
-|------------|---------|---------|---------|---------|
-| [Plantuml](./plantuml/Dockerfile) | [plantuml](./compose.yaml#L2) | See https://plantuml.com/ | `docker pull https://ghcr.io/jmzagorski/bin/plantuml` | `cat diagram.puml \| docker run --rm -i ghcr.io/jmzagorski/bin/plantuml > output.svg` |
+| Dockerfile | Service | Summary | Running |
+|------------|---------|---------|---------|
+| [Plantuml](./plantuml/Dockerfile) | [plantuml](./compose.yaml#L2) | https://plantuml.com/ | `cat diagram.puml \| docker run --rm -i ghcr.io/jmzagorski/bin/plantuml > output.svg` |
+| [Toilet](./toilet/Dockerfile) | [toilet](./compose.yaml#L6) | http://caca.zoy.org/wiki/toilet/ | `docker run --rm ghcr.io/jmzagorski/bin/toilet -w 200 -f letter Hello World` |
