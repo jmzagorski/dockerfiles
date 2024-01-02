@@ -13,6 +13,9 @@ variables to customize the image.
 Additionally, all images can be pulled from https://ghcr.io/jmzagorski, using the image name
 and optional tag as the last path parameter. See the table below for more details.
 
+## [scripts](./scripts)
+Docker commands when custom images are not needed.
+
 ## bin images
 Images prefixed with **bin** are meant to be run, removed and the output mapped
 to the host. These are cli tools with dependencies.
@@ -21,6 +24,7 @@ to the host. These are cli tools with dependencies.
 Images prefixed with **dev** are meant to be a full development environment to
 code with all dependencies for the application/project, VIM, and VIM
 dependencies.
+
 
 | Dockerfile | Service | Summary | Running |
 |------------|---------|---------|---------|
