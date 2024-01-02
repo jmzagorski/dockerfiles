@@ -21,7 +21,8 @@ jobs:
       - name: Get changed folders
         id: changes
         run: |
-          changed_folders=$(git diff --name-only --diff-filter=d ${{ github.event.before }} ${{ github.sha }} | \
+          [[ -z "${{ github.event.before }}" ]] && priorEvent=$(git mktree </dev/null) || priorEvent=${{ github.event.before }}
+          changed_folders=$(git diff --name-only --diff-filter=d $priorEvent ${{ github.sha }} | \
             awk -F/ '{print $1}' | \
             uniq | \
             grep -Fxf <(find . -name Dockerfile -exec dirname {} \; | awk -F/ '{print $2}') | \
@@ -62,13 +63,17 @@ jobs:
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
             img=$(docker compose config $svc | grep 'image:' | awk '{print $2}')
+            [ -f "$svc/.trivyenv" ] && source "$svc/.trivyenv"
             docker run --rm -v trivy-cache:/root/.cache/ \
-              -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image \
-              --format "table" \
-              --exit-code "1" \
-              --ignore-unfixed \
-              --vuln-type "os,library" \
-              --severity CRITICAL,HIGH $img
+              -v /var/run/docker.sock:/var/run/docker.sock \
+              -v $(pwd)/.trivyignore:/work/.trivyignore \
+              -e TRIVY_SEVERITY="${TRIVY_SEVERITY:-CRITICAL,HIGH}" \
+              -e TRIVY_FORMAT="${TRIVY_FORMAT:-table}" \
+              -e TRIVY_EXIT_CODE="${TRIVY_EXIT_CODE:-1}" \
+              -e TRIVY_IGNORE_UNFIXED="${TRIVY_IGNORE_UNFIXED:-true}" \
+              -e TRIVY_VULN_TYPE="${TRIVY_VULN_TYPE:-os,library}" \
+              -w /work \
+              aquasec/trivy:0.48.0 image $img
           done
       - name: Push Docker image
         if: success() && github.event_name != 'pull_request'

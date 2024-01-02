@@ -1,0 +1,29 @@
+---
+services:
+  webapi:
+    image:  ghcr.io/jmzagorski/dev/dotnet
+    #see https://github.com/vishnubob/wait-for-it
+    command: ./scripts/wait-for-it.sh db:1433 --timeout=0 -- dotnet watch run --launch-profile "Docker"
+    working_dir: /home/dotnet/app
+    volumes:
+      - .:/home/dotnet/app
+      - ${HOME}/.vim:/home/dotnet/.vim
+      - ${HOME}/.bashrc:/home/dotnet/.bashrc
+      - ${HOME}/.nuget:/home/dotnet/.nuget
+      - ${HOME}/.gitconfig:/home/dotnet/.gitconfig
+      - ${HOME}/.git_template:/home/dotnet/.git_template
+    environment:
+      TERM: "${TERM?}"
+      # if you want other services to talk to this services. If you need to access
+      # it on your host instead, use the -ports array
+      ASPNETCORE_URLS: "http://0.0.0.0:5000"
+    depends_on:
+      - db
+
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "${DB__SAPASSWORD?}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "${DB__PORT?}:1433"

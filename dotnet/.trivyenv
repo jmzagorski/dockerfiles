@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+TRIVY_SEVERITY="CRITICAL"

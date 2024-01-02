@@ -1,3 +1,4 @@
+---
 services:
   plantuml:
     build: ./plantuml
@@ -6,3 +7,12 @@ services:
   toilet:
     build: ./toilet
     image: ${CONTAINER_REGISTRY}${TOILET_IMAGE:-bin/toilet}:${TAG:-latest}
+
+  dotnet:
+    build:
+      context: ./dotnet
+      args:
+        - USERID=${ARG_USER_ID:-1000}
+        - USER_GROUPID=${ARG_GROUP_ID:-1000}
+        - DOTNET_SDK_VER=${DOTNET_SDK_VER:-6.0}
+    image: ${CONTAINER_REGISTRY}${DOTNET_IMAGE:-dev/dotnet}:${DOTNET_SDK_VER:-6.0}
