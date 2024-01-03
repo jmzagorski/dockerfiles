@@ -6,6 +6,7 @@ EXPOSE 5001
 
 ARG USERID
 ARG USER_GROUPID
+ARG VIM_DEPS
 
 RUN groupadd --gid $USER_GROUPID dotnet \
     && useradd --uid $USERID --gid $USER_GROUPID --shell /bin/bash --create-home dotnet
@@ -17,11 +18,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     git \
     gcc \
-    ripgrep \
-    universal-ctags \
-    yamllint \
     ncurses-dev \
-    make
+   make ${VIM_DEPS}
 RUN update-ca-certificates
 RUN git clone https://github.com/vim/vim.git \
     && cd vim \

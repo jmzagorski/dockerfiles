@@ -1,0 +1,17 @@
+FROM ghcr.io/jmzagorski/dev/puppeteer
+
+ARG USER__CA_CERT
+
+COPY ./${USER__CA_CERT} /usr/local/share/ca-certificates/
+ENV NODE_EXTRA_CA_CERTS="/usr/local/share/ca-certificates/${USER__CA_CERT?}"
+# avoid too many progress messages
+ENV CI=1
+
+WORKDIR /home/node/app
+USER node
+COPY --chown=node:node package*.json ./
+RUN npm install
+COPY --chown=node:node ./ .
+EXPOSE 7000
+
+CMD [ "xvfb-run", "--server-args='-screen 0 1024x768x24'", "npm", "start" ]

@@ -12,7 +12,15 @@ services:
     build:
       context: ./dotnet
       args:
-        - USERID=${ARG_USER_ID:-1000}
-        - USER_GROUPID=${ARG_GROUP_ID:-1000}
-        - DOTNET_SDK_VER=${DOTNET_SDK_VER:-6.0}
+        USERID: "${ARG_USER_ID:-1000}"
+        USER_GROUPID: "${ARG_GROUP_ID:-1000}"
+        DOTNET_SDK_VER: "${DOTNET_SDK_VER:-6.0}"
+        VIM_DEPS: "${VIM_DEPS:-universal-ctags ripgrep yamllint}"
     image: ${CONTAINER_REGISTRY}${DOTNET_IMAGE:-dev/dotnet}:${DOTNET_SDK_VER:-6.0}
+
+  puppeteer:
+    build:
+      context: ./puppeteer
+      args:
+        VIM_DEPS: "${VIM_DEPS:-universal-ctags ripgrep yamllint}"
+    image: ${CONTAINER_REGISTRY}${PUPPETEER_IMAGE:-dev/puppeteer}:${TAG:-latest}
