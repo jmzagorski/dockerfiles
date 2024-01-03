@@ -4,6 +4,7 @@ ARG VIM_DEPS
 
 USER root
 RUN apt-get update && apt-get install --no-install-recommends -y \
+   openssh-client=1:9.2p1-2+deb12u2
    git \
    gcc \
    ncurses-dev \
