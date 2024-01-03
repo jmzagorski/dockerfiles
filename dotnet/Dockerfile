@@ -17,11 +17,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     git \
     gcc \
-    ripgrep \
-    universal-ctags \
-    yamllint \
     ncurses-dev \
-    make
+   make ${VIM_DEPS}
 RUN update-ca-certificates
 RUN git clone https://github.com/vim/vim.git \
     && cd vim \
