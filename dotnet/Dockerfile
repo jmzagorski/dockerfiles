@@ -6,6 +6,7 @@ EXPOSE 5001
 
 ARG USERID
 ARG USER_GROUPID
+ARG VIM_DEPS
 
 RUN groupadd --gid $USER_GROUPID dotnet \
     && useradd --uid $USERID --gid $USER_GROUPID --shell /bin/bash --create-home dotnet
