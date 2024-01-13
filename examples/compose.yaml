@@ -1,6 +1,6 @@
 ---
 services:
-  webapi:
+  dotnet:
     image:  ghcr.io/jmzagorski/dev/dotnet
     #see https://github.com/vishnubob/wait-for-it
     command: ./scripts/wait-for-it.sh db:1433 --timeout=0 -- dotnet watch run --launch-profile "Docker"
@@ -19,6 +19,24 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:5000"
     depends_on:
       - db
+
+  puppeteer:
+    build:
+      context: .
+      dockerfile: Dockerfile.puppeteer
+      args:
+        USER__CA_CERT: "${USER__CA_CERT?}"
+    volumes:
+      - .:/home/node/app
+      - ${HOME}/.vim:/home/node/.vim
+      - ${HOME}/.bashrc:/home/node/.bashrc
+      - ${HOME}/.gitconfig:/home/node/.gitconfig
+      - ${HOME}/.git_template:/home/node/.git_template
+    enronment:
+      TERM: "${TERM?}"
+      NODE_ENV: "development"
+      PUPPETEER_EXECUTABLE_PATH: "google-chrome-stable"
+      LANG: "C.UTF-8"
 
   db:
     image: "mcr.microsoft.com/mssql/server"

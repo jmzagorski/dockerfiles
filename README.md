@@ -25,9 +25,18 @@ Images prefixed with **dev** are meant to be a full development environment to
 code with all dependencies for the application/project, VIM, and VIM
 dependencies.
 
+## [examples](./examples)
+I provide some examples on how to setup a container if additional configuration
+is needed or if it improves the container experience. When building images and running
+containers, I use a `.env` file to store personal preferences. See the examples
+for more details.
+
+## Images
+
 
 | Dockerfile | Service | Summary | Running |
 |------------|---------|---------|---------|
 | [Plantuml](./plantuml/Dockerfile) | [plantuml](./compose.yaml#L3) | https://plantuml.com/ | `cat diagram.puml \| docker run --rm -i ghcr.io/jmzagorski/bin/plantuml > output.svg` |
 | [Toilet](./toilet/Dockerfile) | [toilet](./compose.yaml#L7) | http://caca.zoy.org/wiki/toilet/ | `docker run --rm ghcr.io/jmzagorski/bin/toilet -w 200 -f letter Hello World` |
-| [Dotnet](./dotnet/Dockerfile) | [dotnet](./compose.yaml#L11) | Personal [dotnet](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/dotnet bash` or see [compose example](./examples/dotnet-compose.yaml) |
+| [Dotnet](./dotnet/Dockerfile) | [dotnet](./compose.yaml#L11) | Personal [dotnet](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/dotnet bash` or see [compose example](./examples/compose.yamlL#3) |
+| [Puppeteer](./puppeteer//Dockerfile) | [puppeteer](./compose.yaml#L21) | Personal [puppeteer](https://pptr.dev/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/puppeteer bash` or see [compose example](./examples/compose.yaml#L23) |
