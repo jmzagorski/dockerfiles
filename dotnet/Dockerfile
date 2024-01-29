@@ -14,11 +14,14 @@ RUN groupadd --gid $USER_GROUPID dotnet \
 ARG USER__CA_CERT
 
 COPY ./${USER__CA_CERT} /usr/local/share/ca-certificates/
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install --no-install-recommends -y \
     ca-certificates \
     git \
     gcc \
     ncurses-dev \
+    wget \
    make ${VIM_DEPS}
 RUN update-ca-certificates
 RUN git clone https://github.com/vim/vim.git \
@@ -34,6 +37,12 @@ RUN mkdir -p home/dotnet/.cache/omnisharp-vim/omnisharp-roslyn \
     && wget -O- "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.11/omnisharp-linux-x64-net6.0.tar.gz" \
     | tar -zxv -C "home/dotnet/.cache/omnisharp-vim/omnisharp-roslyn"
 
+# NOTE: CVE-2024-0056
+RUN wget https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell_7.4.1-1.deb_amd64.deb \
+    && dpkg -i powershell_7.4.1-1.deb_amd64.deb \
+    && apt-get install -f \
+    && rm powershell_7.4.1-1.deb_amd64.deb \
+    && rm -rf /usr/share/powershell/.store/powershell.linux.x64/7.4.0
 RUN mkdir /tmp/NuGetScratch && chown dotnet:dotnet /tmp/NuGetScratch/
 RUN chown dotnet:dotnet /home/dotnet
 
