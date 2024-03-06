@@ -24,3 +24,8 @@ services:
       args:
         VIM_DEPS: "${VIM_DEPS:-universal-ctags ripgrep yamllint}"
     image: ${CONTAINER_REGISTRY}${PUPPETEER_IMAGE:-dev/puppeteer}:${TAG:-latest}
+
+  jwt:
+    build:
+      context: ./jwt
+    image: ${CONTAINER_REGISTRY}${JWT_IMAGE:-bin/jwt}:${TAG:-latest}
