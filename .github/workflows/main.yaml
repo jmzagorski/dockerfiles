@@ -76,7 +76,7 @@ jobs:
               aquasec/trivy:0.48.0 image $img
           done
       - name: Push Docker image
-        if: success() && github.event_name != 'pull_request'
+        if: success()
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
