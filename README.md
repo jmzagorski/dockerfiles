@@ -39,4 +39,4 @@ for more details.
 | [Plantuml](./plantuml/Dockerfile) | [plantuml](./compose.yaml#L3) | https://plantuml.com/ | `cat diagram.puml \| docker run --rm -i ghcr.io/jmzagorski/bin/plantuml > output.svg` |
 | [Toilet](./toilet/Dockerfile) | [toilet](./compose.yaml#L7) | http://caca.zoy.org/wiki/toilet/ | `docker run --rm ghcr.io/jmzagorski/bin/toilet -w 200 -f letter Hello World` |
 | [Dotnet](./dotnet/Dockerfile) | [dotnet](./compose.yaml#L11) | Personal [dotnet](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/dotnet bash` or see [compose example](./examples/compose.yamlL#3) |
-| [Puppeteer](./puppeteer//Dockerfile) | [puppeteer](./compose.yaml#L21) | Personal [puppeteer](https://pptr.dev/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/puppeteer bash` or see [compose example](./examples/compose.yaml#L23) |
+| [Puppeteer](./puppeteer/Dockerfile) | [puppeteer](./compose.yaml#L21) | Personal [puppeteer](https://pptr.dev/) dev environment | `docker run -it --rm ghcr.io/jmzagorski/dev/puppeteer bash` or see [compose example](./examples/compose.yaml#L23) |
