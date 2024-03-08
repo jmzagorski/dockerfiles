@@ -29,3 +29,8 @@ services:
     build:
       context: ./jwt
     image: ${CONTAINER_REGISTRY}${JWT_IMAGE:-bin/jwt}:${TAG:-latest}
+
+  yamllint:
+    build:
+      context: ./yamllint
+    image: ${CONTAINER_REGISTRY}${YAMLLINT_IMAGE:-bin/yamllint}:${TAG:-latest}
