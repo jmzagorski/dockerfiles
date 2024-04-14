@@ -1,2 +1,5 @@
 # dotnet: not in use
 CVE-2021-24112
+
+# dotnet: in omnisharp-roslyn, but that has not been updated
+CVE-2023-29331
