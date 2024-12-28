@@ -1,0 +1,138 @@
+---
+mqtt:
+  host: iothome1
+  user: "{FRIGATE_MQTT_USER}"
+  password: "{FRIGATE_MQTT_PASSWORD}"
+
+cameras:
+  frontdoor:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+        - path: "{FRIGATE_CAMERAS_FRONTDOOR_INPUTS_PATH}"
+          roles:
+            - detect
+            - rtmp
+    objects:
+      track:
+        - person
+        - dog
+      mask:
+        - 1723,89,1437,43,1207,27,1252,229,2077,184
+        - 669,179,1571,121,2130,297,2592,486,2592,0,1545,0,600,0
+    snapshots:
+      enabled: True
+    record:
+      enabled: True
+      retain:
+        days: 0
+        mode: motion
+      events:
+        retain:
+          default: 10
+          mode: motion
+    detect:
+      width: 2592 # <---- update for your camera's resolution
+      height: 1944 # <---- update for your camera's resolution
+      fps: 15
+
+  pool:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+        - path: "{FRIGATE_CAMERAS_POOL_INPUTS_PATH}"
+          roles:
+            - detect
+            - rtmp
+    objects:
+      track:
+        - person
+        - dog
+        - car
+        - motorcycle
+        - bicycle
+      filters:
+        person:
+          min_score: 0.9
+          mask:
+            - 2880,1732,2805,1793,2753,1692,2861,1624 #snail
+            - 174,899,219,1369,414,1433,769,1576,1339,1466,1391,1360,1219,998,614,762 #bbal hoop / large bush area
+        car:
+          mask:
+            - 2706,369,3019,1193,1720,1548,456,946,1478,285
+    snapshots:
+      enabled: True
+    record:
+      enabled: True
+      retain:
+        days: 0
+        mode: motion
+      events:
+        retain:
+          default: 10
+          mode: motion
+    detect: #these settings should match the camera
+      width: 3840
+      height: 2160
+      fps: 15
+
+  driveway:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+        - path: "{FRIGATE_CAMERAS_DRIVEWAY_INPUTS_PATH}"
+          roles:
+            - detect
+            - rtmp
+    snapshots:
+      enabled: True
+    record:
+      enabled: True
+      retain:
+        days: 0
+        mode: motion
+      events:
+        retain:
+          default: 10
+          mode: motion
+    detect: #these settings should match the camera
+      width: 3840
+      height: 2160
+      fps: 15
+    motion:
+      improve_contrast: true #better nightime detection
+    objects:
+      track:
+        - person
+        - dog
+        - car
+        - motorcycle
+        - bus
+        - bicycle
+      filters:
+        person:
+          min_score: 0.86
+          mask:
+            - 461,0,845,0,940,0,1045,0,1205,0,842,174,412,367,275,0 #ignore road and neighbors
+          min_area: 3000 #ignore birds
+        car:
+          mask:
+            - 461,0,845,0,940,0,1045,0,1205,0,842,174,412,367,275,0 #ignore road and neighbors
+        motorcycle:
+          mask:
+            - 461,0,845,0,940,0,1045,0,1205,0,842,174,412,367,275,0 #ignore road and neighbors
+        bus:
+          mask:
+            - 3125,71,3718,75,3713,155,3127,176 #ignore timestamp on camera, which is weird
+
+detectors:
+  tensorrt:
+    type: tensorrt
+    device: 0
+
+model:
+  path: /trt-models/yolov7-tiny-416.trt
+  input_tensor: nchw
+  input_pixel_format: rgb
+  width: 416
+  height: 416
