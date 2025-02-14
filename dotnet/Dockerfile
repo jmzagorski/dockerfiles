@@ -37,8 +37,10 @@ RUN mkdir -p home/dotnet/.cache/omnisharp-vim/omnisharp-roslyn \
     && wget -O- "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.11/omnisharp-linux-x64-net6.0.tar.gz" \
     | tar -zxv -C "home/dotnet/.cache/omnisharp-vim/omnisharp-roslyn"
 
-RUN mkdir /tmp/NuGetScratch && chown dotnet:dotnet /tmp/NuGetScratch/
-RUN chown dotnet:dotnet /home/dotnet
+RUN mkdir /tmp/NuGetScratch \
+	&& chown dotnet:dotnet /tmp/NuGetScratch/ \
+	&& chown dotnet:dotnet /home/dotnet \
+	&& dotnet workload update \
 
 USER dotnet
 WORKDIR /home/dotnet
