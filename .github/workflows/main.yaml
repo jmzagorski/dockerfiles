@@ -27,6 +27,7 @@ jobs:
             uniq | \
             grep -Fxf <(find . -name Dockerfile -exec dirname {} \; | awk -F/ '{print $2}') | \
             xargs)
+          echo "changed_folders=$changed_folders"
           echo "changed_folders=$changed_folders" >> $GITHUB_OUTPUT
 
   build:
@@ -62,6 +63,8 @@ jobs:
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
+            cat "$svc/.env"
+            cat "$svc/.env" >> $GITHUB_ENV
             img=$(docker compose config $svc | grep 'image:' | awk '{print $2}')
             [ -f "$svc/.trivyenv" ] && source "$svc/.trivyenv"
             docker run --rm -v trivy-cache:/root/.cache/ \
