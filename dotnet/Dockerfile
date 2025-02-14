@@ -46,9 +46,7 @@ RUN mkdir /tmp/NuGetScratch \
 USER dotnet
 WORKDIR /home/dotnet
 ENV PATH="/home/dotnet/.dotnet/tools:$PATH"
-RUN dotnet dev-certs https --clean --verbose \
-    && dotnet dev-certs https \
-	&& dotnet tool update -g linux-dev-certs \
+RUN dotnet tool update -g linux-dev-certs \
 	&& dotnet linux-dev-certs install
 
 ENV ASPNETCORE_ENVIRONMENT=Development
