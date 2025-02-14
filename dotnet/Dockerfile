@@ -40,7 +40,7 @@ RUN mkdir -p home/dotnet/.cache/omnisharp-vim/omnisharp-roslyn \
 RUN mkdir /tmp/NuGetScratch \
 	&& chown dotnet:dotnet /tmp/NuGetScratch/ \
 	&& chown dotnet:dotnet /home/dotnet \
-	&& dotnet workload update \
+	&& dotnet workload update
 
 USER dotnet
 WORKDIR /home/dotnet
