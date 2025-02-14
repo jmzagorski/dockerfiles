@@ -44,8 +44,13 @@ RUN mkdir /tmp/NuGetScratch \
 
 USER dotnet
 WORKDIR /home/dotnet
-RUN dotnet dev-certs https --clean \
-    && dotnet dev-certs https \
-    && dotnet dev-certs https --trust
+# RUN dotnet dev-certs https --clean \
+#     && dotnet dev-certs https \
+#     && dotnet dev-certs https --trust
+
+RUN dotnet dev-certs https --clean
+RUN dotnet dev-certs https
+RUN && dotnet dev-certs https --trust
+
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV LANG C.UTF-8
