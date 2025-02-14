@@ -18,11 +18,9 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
     ca-certificates \
-	sudo \
     git \
     gcc \
     ncurses-dev \
-	libnss3-tools \
     wget \
    make ${VIM_DEPS}
 RUN update-ca-certificates
@@ -47,8 +45,7 @@ RUN mkdir /tmp/NuGetScratch \
 USER dotnet
 WORKDIR /home/dotnet
 ENV PATH="/home/dotnet/.dotnet/tools:$PATH"
-RUN dotnet tool update -g linux-dev-certs \
-	&& dotnet linux-dev-certs install
+RUN dotnet dev-certs https --clean --verbose
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV LANG C.UTF-8
