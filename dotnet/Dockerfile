@@ -44,7 +44,7 @@ RUN mkdir /tmp/NuGetScratch \
 
 USER dotnet
 WORKDIR /home/dotnet
-RUN export PATH="/home/dotnet/.dotnet/tools:$PATH"
+ENV PATH="/home/dotnet/.dotnet/tools:$PATH"
 RUN dotnet dev-certs https --clean \
     && dotnet dev-certs https \
 	&& dotnet tool update -g linux-dev-certs \
