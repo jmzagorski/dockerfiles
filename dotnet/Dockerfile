@@ -21,6 +21,7 @@ RUN apt-get update && \
     git \
     gcc \
     ncurses-dev \
+	libnss3-tools \
     wget \
    make ${VIM_DEPS}
 RUN update-ca-certificates
