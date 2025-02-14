@@ -83,5 +83,6 @@ jobs:
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
+            [ -f "$svc/.env" ] && export $(grep -v '^#' $svc/.env | xargs -d '\n')
             docker compose push $svc
           done
