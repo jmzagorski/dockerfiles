@@ -57,13 +57,14 @@ jobs:
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
-            export $(grep -v '^#' $svc/.env | xargs -d '\n')
+            [ -f "$svc/.env" ] && export $(grep -v '^#' $svc/.env | xargs -d '\n')
             docker compose build $svc
           done
       - name: Run Trivy image vulnerability scanner
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
+            [ -f "$svc/.env" ] && export $(grep -v '^#' $svc/.env | xargs -d '\n')
             img=$(docker compose config $svc | grep 'image:' | awk '{print $2}')
             [ -f "$svc/.trivyenv" ] && source "$svc/.trivyenv"
             docker run --rm -v trivy-cache:/root/.cache/ \
