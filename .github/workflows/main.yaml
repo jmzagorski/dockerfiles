@@ -57,8 +57,7 @@ jobs:
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
-            source "$svc/.env"
-            export
+            export $(grep -v '^#' $svc/.env | xargs -d '\n')
             docker compose build $svc
           done
       - name: Run Trivy image vulnerability scanner
