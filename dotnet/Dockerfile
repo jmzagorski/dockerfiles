@@ -44,8 +44,7 @@ RUN mkdir /tmp/NuGetScratch \
 
 USER dotnet
 WORKDIR /home/dotnet
-RUN dotnet workload update \
-	&& dotnet dev-certs https --clean \
+RUN dotnet dev-certs https --clean \
     && dotnet dev-certs https \
     && dotnet dev-certs https --trust
 ENV ASPNETCORE_ENVIRONMENT=Development
