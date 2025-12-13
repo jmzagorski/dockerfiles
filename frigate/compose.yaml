@@ -1,23 +1,24 @@
 services:
   frigate:
     container_name: frigate
-    #privileged: true # this may not be necessary for all setups
+#   privileged: true # this may not be necessary for all setups
     restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:stable
-    shm_size: "684mb" # update for your cameras based on calculation above
+    image: ghcr.io/blakeblackshear/frigate:stable-tensorrt
+    shm_size: "685mb" # update for your cameras based on calculation above
     stop_grace_period: 30s
     devices:
       - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
-        #- /dev/apex_0:/dev/apex_0 # passes a PCIe Coral, follow driver instructions here https://coral.ai/docs/m2/get-started/#2a-on-linux
-      - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
+#     - /dev/apex_0:/dev/apex_0 # passes a PCIe Coral, follow driver instructions here https://coral.ai/docs/m2/get-started/#2a-on-linux
+#     - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      #- ./config/config.yaml:/config/config.yml:ro
+#     - ./config/config.yaml:/config/config.yml:ro
       - ./config:/config
 #     - ./media:/media/frigate
       - ./db:/db
       - /mnt/nvr/frigate/media:/media/frigate
-      - ./trt-models:/trt-models
+#      - ./trt-models:/trt-models
+      - ./models:/models
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:
@@ -34,7 +35,7 @@ services:
       FRIGATE_CAMERAS_FRONTDOOR_INPUTS_PATH: "${CAMERAS_FRONTDOOR_INPUTS_PATH}"
       FRIGATE_CAMERAS_POOL_INPUTS_PATH: "${CAMERAS_POOL_INPUTS_PATH}"
       FRIGATE_CAMERAS_DRIVEWAY_INPUTS_PATH: "${CAMERAS_DRIVEWAY_INPUTS_PATH}"
-      LIBVA_DRIVER_NAME: "i965"
+#     LIBVA_DRIVER_NAME: "i965"
       USE_FP16: "FALSE" # for nvidia Quadro M2200 maxwell architecture (older)
     deploy:
       resources:

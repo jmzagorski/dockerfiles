@@ -6,7 +6,8 @@ mqtt:
 cameras:
   frontdoor:
     ffmpeg:
-      hwaccel_args: preset-nvidia-h264
+#     hwaccel_args: preset-nvidia-h264
+      hwaccel_args: preset-nvidia
       inputs:
         - path: '{FRIGATE_CAMERAS_FRONTDOOR_INPUTS_PATH}'
           roles:
@@ -35,7 +36,7 @@ cameras:
     detect:
       width: 2592 # <---- update for your camera's resolution
       height: 1944 # <---- update for your camera's resolution
-      fps: 15
+      fps: 5
 
   pool:
     ffmpeg:
@@ -77,7 +78,7 @@ cameras:
     detect: #these settings should match the camera
       width: 3840
       height: 2160
-      fps: 15
+      fps: 5
 
   driveway:
     ffmpeg:
@@ -103,7 +104,7 @@ cameras:
     detect: #these settings should match the camera
       width: 3840
       height: 2160
-      fps: 15
+      fps: 5
     motion:
       improve_contrast: true #better nightime detection
     objects:
@@ -131,19 +132,26 @@ cameras:
             - 3125,71,3718,75,3713,155,3127,176 #ignore timestamp on camera, which is weird
 
 detectors:
-   onnx:
-     type: onnx
-     device: cuda
+  onnx:
+    type: onnx
+    device: cuda
 #  tensorrt:
 #    type: tensorrt
 #    device: 0
 
-#model:
-#  path: /trt-models/yolov7-tiny-416.trt
-#  input_tensor: nchw
-#  input_pixel_format: rgb
-#  width: 416
-#  height: 416
+model:
+  model_type: yolo-generic
+  path: /models/yolov9-t-320.onnx
+  input_tensor: nchw
+  input_pixel_format: rgb
+  input_dtype: float
+  width: 320
+  height: 320
 detect:
   enabled: true
 version: 0.16-0
+camera_groups:
+  Birdseye:
+    order: 1
+    icon: LuBird
+    cameras: birdseye
