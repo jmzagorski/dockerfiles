@@ -1,15 +1,14 @@
----
 mqtt:
   host: iothome1
-  user: "{FRIGATE_MQTT_USER}"
-  password: "{FRIGATE_MQTT_PASSWORD}"
+  user: '{FRIGATE_MQTT_USER}'
+  password: '{FRIGATE_MQTT_PASSWORD}'
 
 cameras:
   frontdoor:
     ffmpeg:
       hwaccel_args: preset-nvidia-h264
       inputs:
-        - path: "{FRIGATE_CAMERAS_FRONTDOOR_INPUTS_PATH}"
+        - path: '{FRIGATE_CAMERAS_FRONTDOOR_INPUTS_PATH}'
           roles:
             - detect
             - rtmp
@@ -21,16 +20,18 @@ cameras:
         - 1723,89,1437,43,1207,27,1252,229,2077,184
         - 669,179,1571,121,2130,297,2592,486,2592,0,1545,0,600,0
     snapshots:
-      enabled: True
+      enabled: true
     record:
-      enabled: True
+      enabled: true
       retain:
         days: 0
         mode: motion
-      events:
+      alerts:
         retain:
-          default: 10
-          mode: motion
+          days: 10
+      detections:
+        retain:
+          days: 10
     detect:
       width: 2592 # <---- update for your camera's resolution
       height: 1944 # <---- update for your camera's resolution
@@ -40,7 +41,7 @@ cameras:
     ffmpeg:
       hwaccel_args: preset-nvidia-h264
       inputs:
-        - path: "{FRIGATE_CAMERAS_POOL_INPUTS_PATH}"
+        - path: '{FRIGATE_CAMERAS_POOL_INPUTS_PATH}'
           roles:
             - detect
             - rtmp
@@ -61,16 +62,18 @@ cameras:
           mask:
             - 2706,369,3019,1193,1720,1548,456,946,1478,285
     snapshots:
-      enabled: True
+      enabled: true
     record:
-      enabled: True
+      enabled: true
       retain:
         days: 0
         mode: motion
-      events:
+      alerts:
         retain:
-          default: 10
-          mode: motion
+          days: 10
+      detections:
+        retain:
+          days: 10
     detect: #these settings should match the camera
       width: 3840
       height: 2160
@@ -80,21 +83,23 @@ cameras:
     ffmpeg:
       hwaccel_args: preset-nvidia-h264
       inputs:
-        - path: "{FRIGATE_CAMERAS_DRIVEWAY_INPUTS_PATH}"
+        - path: '{FRIGATE_CAMERAS_DRIVEWAY_INPUTS_PATH}'
           roles:
             - detect
             - rtmp
     snapshots:
-      enabled: True
+      enabled: true
     record:
-      enabled: True
+      enabled: true
       retain:
         days: 0
         mode: motion
-      events:
+      alerts:
         retain:
-          default: 10
-          mode: motion
+          days: 10
+      detections:
+        retain:
+          days: 10
     detect: #these settings should match the camera
       width: 3840
       height: 2160
@@ -126,13 +131,19 @@ cameras:
             - 3125,71,3718,75,3713,155,3127,176 #ignore timestamp on camera, which is weird
 
 detectors:
-  tensorrt:
-    type: tensorrt
-    device: 0
+   onnx:
+     type: onnx
+     device: cuda
+#  tensorrt:
+#    type: tensorrt
+#    device: 0
 
-model:
-  path: /trt-models/yolov7-tiny-416.trt
-  input_tensor: nchw
-  input_pixel_format: rgb
-  width: 416
-  height: 416
+#model:
+#  path: /trt-models/yolov7-tiny-416.trt
+#  input_tensor: nchw
+#  input_pixel_format: rgb
+#  width: 416
+#  height: 416
+detect:
+  enabled: true
+version: 0.16-0
