@@ -29,3 +29,15 @@ services:
     build:
       context: ./jwt
     image: ${CONTAINER_REGISTRY}${JWT_IMAGE:-bin/jwt}:${TAG:-latest}
+
+  ado:
+    build:
+      context: .
+      dockerfile: ./azure-cli
+      args:
+        ADO_ORG: ${ADO_ORG?}
+        ADO_PROJECT: ${ADO_PROJECT?}
+    working_dir: /workspace
+    image: ${CONTAINER_REGISTRY}${AZURECLI_IMAGE:-bin/azurecli}:${TAG:-latest}
+    environment:
+      AZURE_DEVOPS_EXT_PAT: ${ADO_PAT}
