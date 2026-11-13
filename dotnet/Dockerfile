@@ -1,6 +1,11 @@
 ARG DOTNET_SDK_VER
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VER}
 
+ARG USERID=1000
+ARG USER_GROUPID=1000
+
+USER root
+
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         ca-certificates \
@@ -36,7 +41,8 @@ RUN apt-get update \
 
 RUN npm install --global backlog.md
 
-RUN mkdir /tmp/NuGetScratch && chown ubuntu:ubuntu /tmp/NuGetScratch/
+RUN mkdir -p /home/ubuntu /tmp/NuGetScratch \
+    && chown "${USERID}:${USER_GROUPID}" /home/ubuntu /tmp/NuGetScratch
 
 ENV HOME=/home/ubuntu \
     DOTNET_CLI_HOME=/home/ubuntu \
