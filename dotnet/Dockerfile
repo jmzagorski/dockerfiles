@@ -60,4 +60,3 @@ RUN curl -fsSL https://gh.io/copilot-install | bash
 RUN dotnet tool install -g roslyn-language-server --prerelease
 
 CMD ["bash"]
-
