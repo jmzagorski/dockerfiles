@@ -3,6 +3,15 @@ FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VER}
 
 USER root
 
+RUN echo "=== identity ===" \
+    && id \
+    && echo "=== ubuntu user ===" \
+    && grep '^ubuntu:' /etc/passwd || true \
+    && echo "=== ubuntu group ===" \
+    && grep '^ubuntu:' /etc/group || true \
+    && echo "=== resolved identity ===" \
+    && id ubuntu
+
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         ca-certificates \
