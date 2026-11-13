@@ -59,8 +59,4 @@ USER ubuntu
 RUN curl -fsSL https://gh.io/copilot-install | bash
 RUN dotnet tool install -g roslyn-language-server --prerelease
 
-RUN dotnet dev-certs https --clean \
-    && dotnet dev-certs https \
-    && dotnet dev-certs https --trust
-
 CMD ["bash"]
