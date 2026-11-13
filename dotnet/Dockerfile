@@ -3,15 +3,6 @@ FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VER}
 
 USER root
 
-RUN echo "=== identity ===" \
-    && id \
-    && echo "=== ubuntu user ===" \
-    && grep '^ubuntu:' /etc/passwd || true \
-    && echo "=== ubuntu group ===" \
-    && grep '^ubuntu:' /etc/group || true \
-    && echo "=== resolved identity ===" \
-    && id ubuntu
-
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         ca-certificates \
@@ -19,6 +10,9 @@ RUN apt-get update \
         git \
         nodejs \
         npm \
+        universal-ctags \
+        ripgrep \
+        yamllint \
     && rm -rf /var/lib/apt/lists/*
 
 RUN --mount=type=secret,id=custom_ca_cert,required=false \
