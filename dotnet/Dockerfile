@@ -6,6 +6,15 @@ ARG USER_GROUPID=1000
 
 USER root
 
+RUN echo "=== identity ===" \
+    && id \
+    && echo "=== ubuntu user ===" \
+    && grep '^ubuntu:' /etc/passwd || true \
+    && echo "=== ubuntu group ===" \
+    && grep '^ubuntu:' /etc/group || true \
+    && echo "=== resolved identity ===" \
+    && id ubuntu
+
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         ca-certificates \
@@ -54,7 +63,7 @@ ENV HOME=/home/ubuntu \
 EXPOSE 5000 5001
 
 WORKDIR /home/ubuntu
-USER ubuntu
+USER ${USERID}:${USER_GROUPID}
 
 RUN curl -fsSL https://gh.io/copilot-install | bash
 RUN dotnet tool install -g roslyn-language-server --prerelease
