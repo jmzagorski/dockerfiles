@@ -56,7 +56,7 @@ jobs:
         run: |
           for svc in ${{ needs.should_build.outputs.changed_services }}
           do
-            docker compose build $svc
+            docker compose build --pull $svc
           done
       - name: Run Trivy image vulnerability scanner
         run: |

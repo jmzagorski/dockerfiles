@@ -12,11 +12,8 @@ services:
     build:
       context: ./dotnet
       args:
-        USERID: "${ARG_USER_ID:-1000}"
-        USER_GROUPID: "${ARG_GROUP_ID:-1000}"
-        DOTNET_SDK_VER: "${DOTNET_SDK_VER:-8.0}"
-        VIM_DEPS: "${VIM_DEPS:-universal-ctags ripgrep yamllint nodejs}"
-    image: ${CONTAINER_REGISTRY}${DOTNET_IMAGE:-dev/dotnet}:${DOTNET_SDK_VER:-8.0}
+        DOTNET_SDK_VER: "${DOTNET_SDK_VER:-10.0}"
+    image: ${CONTAINER_REGISTRY}${DOTNET_IMAGE:-dev/dotnet}:${DOTNET_SDK_VER:-10.0}
 
   puppeteer:
     build:
@@ -29,3 +26,45 @@ services:
     build:
       context: ./jwt
     image: ${CONTAINER_REGISTRY}${JWT_IMAGE:-bin/jwt}:${TAG:-latest}
+
+  magik:
+    build:
+      context: ./imagemagik
+      secrets:
+        - custom_ca
+    image: ${CONTAINER_REGISTRY}${IMAGEMAGIK_IMAGE:-bin/imagemagik}:${TAG:-latest}
+
+  backlog:
+    build:
+      context: ./backlog
+      secrets:
+        - custom_ca
+    image: ${CONTAINER_REGISTRY}${BACKLOG_IMAGE:-bin/backlog}:${TAG:-latest}
+
+  yamllint:
+    build:
+      context: ./yamllint
+    image: ${CONTAINER_REGISTRY}${YAMLLINT_IMAGE:-bin/yamllint}:${TAG:-latest}
+
+  pdf:
+    build:
+      context: ./pdfunite
+    image: ${CONTAINER_REGISTRY}${PDF_IMAGE:-bin/pdfunite}:${TAG:-latest}
+
+  copilot:
+    build:
+      context: ./copilot
+      secrets:
+        - custom_ca
+    image: ${CONTAINER_REGISTRY}${COPILOT_IMAGE:-bin/copilot}:${TAG:-latest}
+
+  presidio:
+    build:
+      context: ./presidio/
+      secrets:
+        - custom_ca
+    image: ${CONTAINER_REGISTRY}${PRESIDIO_IMAGE:-bin/presido}:${TAG:-local}
+
+secrets:
+  custom_ca:
+    file: ${CUSTOM_CA}
