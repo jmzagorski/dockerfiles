@@ -1,19 +1,7 @@
 ARG DOTNET_SDK_VER
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VER}
 
-ARG USERID=1000
-ARG USER_GROUPID=1000
-
 USER root
-
-RUN echo "=== identity ===" \
-    && id \
-    && echo "=== ubuntu user ===" \
-    && grep '^ubuntu:' /etc/passwd || true \
-    && echo "=== ubuntu group ===" \
-    && grep '^ubuntu:' /etc/group || true \
-    && echo "=== resolved identity ===" \
-    && id ubuntu
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
@@ -51,7 +39,7 @@ RUN apt-get update \
 RUN npm install --global backlog.md
 
 RUN mkdir -p /home/ubuntu /tmp/NuGetScratch \
-    && chown "${USERID}:${USER_GROUPID}" /home/ubuntu /tmp/NuGetScratch
+    && chown ubuntu:ubuntu /home/ubuntu /tmp/NuGetScratch
 
 ENV HOME=/home/ubuntu \
     DOTNET_CLI_HOME=/home/ubuntu \
@@ -63,7 +51,7 @@ ENV HOME=/home/ubuntu \
 EXPOSE 5000 5001
 
 WORKDIR /home/ubuntu
-USER ${USERID}:${USER_GROUPID}
+USER ubuntu
 
 RUN curl -fsSL https://gh.io/copilot-install | bash
 RUN dotnet tool install -g roslyn-language-server --prerelease
